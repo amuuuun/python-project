@@ -120,9 +120,9 @@
                         </td>
 
                         <td>
-                            {% if r.statut == "en_retard" %}
+                            {% if r.statut_auto == "en_retard" %}
                                 <span class="badge bg-danger">En retard</span>
-                            {% elif r.statut == "retourne" %}
+                            {% elif r.statut_auto == "retourne" %}
                                 <span class="badge bg-success">Retourné</span>
                             {% else %}
                                 <span class="badge bg-warning text-dark">En cours</span>
@@ -130,7 +130,7 @@
                         </td>
 
                         <td>
-                            {% if r.statut != "retourne" %}
+                            {% if r.statut_auto != "retourne" %}
                                 <a href="{% url 'retourner_livre' r.id %}"
                                    class="btn btn-sm btn-success">
                                     Retourner

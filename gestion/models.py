@@ -28,6 +28,8 @@ class Livre(models.Model):
 
 
 # 📦 Reservation
+from datetime import date
+
 class Reservation(models.Model):
     STATUT_CHOICES = [
         ('reserve', 'Réservé'),
@@ -45,20 +47,14 @@ class Reservation(models.Model):
 
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='reserve')
 
-    def save(self, *args, **kwargs):
-        # 🔥 BUSINESS LOGIC
-
-        # If returned → update status + book availability
+    # 🔥 AUTO STATUS (REAL-TIME)
+    @property
+    def statut_auto(self):
         if self.date_retour:
-            self.statut = 'retourne'
-            self.livre.disponible = True
-            self.livre.save()
-
-        # If overdue
+            return 'retourne'
         elif self.date_limite < date.today():
-            self.statut = 'en_retard'
-
-        super().save(*args, **kwargs)
+            return 'en_retard'
+        return self.statut
 
     def __str__(self):
         return f"{self.livre.titre} - {self.utilisateur.nom}"
